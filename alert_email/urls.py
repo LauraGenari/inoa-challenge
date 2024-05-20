@@ -3,6 +3,5 @@ from . import views
 
 #same as route files on nodeJS
 urlpatterns = [
-    path('stocks/', views.get_stocks),
-    path('gates/', views.get_gates)
+    path('', views.set_stocks_to_email),
 ]

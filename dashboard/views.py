@@ -7,6 +7,3 @@ def get_stocks(request):
 
 def get_gates(request):
     return render(request, 'gates.html')
-
-def set_stocks_to_email(request):
-    return render(request, 'email.html')
