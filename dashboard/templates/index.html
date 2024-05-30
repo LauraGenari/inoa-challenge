@@ -1,0 +1,16 @@
+<!-- dashboard/templates/dashboard/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monitoramento de Ativos</title>
+</head>
+<body>
+    <h1>Monitoramento de Ativos</h1>
+    <a href="{% url 'add_asset' %}">Adicionar Ativo</a>
+    <ul>
+        {% for asset in assets %}
+        <li>{{ asset.ticker }} - <a href="{% url 'edit_asset' asset.id %}">Editar</a> - <a href="{% url 'price_history' asset.id %}">Histórico de Preços</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

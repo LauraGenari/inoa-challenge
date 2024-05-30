@@ -123,3 +123,25 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Configurações do backend de email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.seu-servidor-email.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'seu-email@seu-servidor-email.com'
+EMAIL_HOST_PASSWORD = 'sua-senha'
+
+# Configuração do Celery
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# settings.py
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    'fetch-asset-prices-every-minute': {
+        'task': 'alert_email.tasks.fetch_asset_prices',
+        'schedule': crontab(),  # Isso agendará a tarefa para rodar a cada minuto
+    },
+}

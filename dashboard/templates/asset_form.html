@@ -1,0 +1,16 @@
+<!-- dashboard/templates/dashboard/asset_form.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if form.instance.id %}Editar{% else %}Adicionar{% endif %} Ativo</title>
+</head>
+<body>
+    <h1>{% if form.instance.id %}Editar{% else %}Adicionar{% endif %} Ativo</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar</button>
+    </form>
+    <a href="{% url 'index' %}">Voltar</a>
+</body>
+</html>
