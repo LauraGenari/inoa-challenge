@@ -1,33 +1,71 @@
-from django.shortcuts import render, redirect
-from .models import Asset, PriceRecord
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
+from .models import Asset
 from .forms import AssetForm
+import yfinance as yf
+from django.core.mail import send_mail
+from django.conf import settings
 
-def index(request):
+def asset_list(request):
     assets = Asset.objects.all()
-    return render(request, 'index.html', {'assets': assets})
+    return render(request, 'asset_list.html', {'assets': assets})
 
-def add_asset(request):
+def asset_create(request):
     if request.method == 'POST':
         form = AssetForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            return redirect('asset_list')
     else:
         form = AssetForm()
     return render(request, 'asset_form.html', {'form': form})
 
-def edit_asset(request, asset_id):
-    asset = Asset.objects.get(id=asset_id)
+def asset_update(request, pk):
+    asset = get_object_or_404(Asset, pk=pk)
     if request.method == 'POST':
         form = AssetForm(request.POST, instance=asset)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            return redirect('asset_list')
     else:
         form = AssetForm(instance=asset)
     return render(request, 'asset_form.html', {'form': form})
 
-def price_history(request, asset_id):
-    asset = Asset.objects.get(id=asset_id)
-    price_records = PriceRecord.objects.filter(asset=asset).order_by('-timestamp')
-    return render(request, 'asset_list.html', {'asset': asset, 'price_records': price_records})
+@require_POST
+def asset_delete(request, pk):
+    asset = get_object_or_404(Asset, pk=pk)
+    asset.delete()
+    return redirect('asset_list')
+
+def price_history(request, pk):
+    asset = get_object_or_404(Asset, pk=pk)
+    ticker = yf.Ticker(asset.ticker)
+    hist = ticker.history(period="1mo")  # Último mês de dados
+
+    price_history = [
+        {'Date': date.strftime('%Y-%m-%d'), 'Close': row['Close']}
+        for date, row in hist.iterrows()
+    ]
+    
+    return render(request, 'price_history.html', {'asset': asset, 'price_history': price_history})
+
+def check_prices():
+    assets = Asset.objects.all()
+    for asset in assets:
+        ticker = yf.Ticker(asset.ticker)
+        current_price = ticker.history(period="1d")['Close'].iloc[-1]
+        if current_price < asset.lower_tunnel:
+            send_mail(
+                'Oportunidade de Compra',
+                f'O preço do ativo {asset.ticker} está abaixo do limite inferior do túnel: {current_price}',
+                settings.DEFAULT_FROM_EMAIL,
+                [settings.NOTIFICATION_EMAIL]
+            )
+        elif current_price > asset.upper_tunnel:
+            send_mail(
+                'Oportunidade de Venda',
+                f'O preço do ativo {asset.ticker} está acima do limite superior do túnel: {current_price}',
+                settings.DEFAULT_FROM_EMAIL,
+                [settings.NOTIFICATION_EMAIL]
+            )

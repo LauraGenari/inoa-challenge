@@ -1,0 +1,17 @@
+<!-- dashboard/templates/dashboard/price_history.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Histórico de Preços</title>
+</head>
+<body>
+    <h1>Histórico de Preços para {{ asset.ticker }}</h1>
+    <ul>
+        {% for record in price_history %}
+            <li>{{ record.Date }}: {{ record.Close }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'asset_list' %}">Voltar à Lista de Ativos</a>
+</body>
+</html>

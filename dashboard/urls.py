@@ -1,9 +1,12 @@
+# dashboard/urls.py
+
 from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('add/', views.add_asset, name='add_asset'),
-    path('edit/<int:asset_id>/', views.edit_asset, name='edit_asset'),
-    path('price-history/<int:asset_id>/', views.price_history, name='price_history'),
+    path('', views.asset_list, name='asset_list'),
+    path('new/', views.asset_create, name='asset_create'),
+    path('edit/<int:pk>/', views.asset_update, name='asset_update'),
+    path('delete/<int:pk>/', views.asset_delete, name='asset_delete'),
+    path('price-history/<int:pk>/', views.price_history, name='price_history'),
 ]

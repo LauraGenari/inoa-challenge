@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dashboard',
-    'alert_email',
-    'django_cron'
+    'django_cron',
+    # 'background_task',
 ]
 
 MIDDLEWARE = [
@@ -127,12 +127,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Configurações do backend de email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.seu-servidor-email.com'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'seu-email@seu-servidor-email.com'
-EMAIL_HOST_PASSWORD = 'sua-senha'
+EMAIL_HOST_USER = 'lauragenari231@gmail.com'  # Substitua pelo seu e-mail
+EMAIL_HOST_PASSWORD = 'vvxs gquh gfiz yvlg'  # Substitua pela sua senha
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+NOTIFICATION_EMAIL= 'lauragenari471@outlook.com'
 
 CRON_CLASSES = [
-    "alert_email.cron.SendEmailsCronJob",
+    'dashboard.cron.CheckPricesCronJob',
 ]

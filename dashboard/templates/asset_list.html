@@ -1,16 +1,24 @@
-<!-- dashboard/templates/dashboard/asset_list.html -->
+<!-- dashboard/templates/dashboard/index.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Histórico de Preços - {{ asset.ticker }}</title>
+    <title>Monitoramento de Ativos</title>
 </head>
 <body>
-    <h1>Histórico de Preços - {{ asset.ticker }}</h1>
+    <h1>Monitoramento de Ativos</h1>
+    <a href="{% url 'asset_create' %}">Adicionar Ativo</a>
     <ul>
-        {% for record in price_records %}
-        <li>{{ record.timestamp }}: {{ record.price }}</li>
+        {% for asset in assets %}
+        <li>
+            {{ asset.ticker }} -
+            <a href="{% url 'price_history' asset.pk %}">Histórico de Preços</a> -
+            <a href="{% url 'asset_update' asset.pk %}">Editar</a> -
+            <form action="{% url 'asset_delete' asset.pk %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Deletar</button>
+            </form>
+        </li>
         {% endfor %}
     </ul>
-    <a href="{% url 'index' %}">Voltar</a>
 </body>
 </html>
