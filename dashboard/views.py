@@ -4,19 +4,17 @@ from django.views.decorators.http import require_POST
 from .models import Asset
 from .forms import AssetForm
 import yfinance as yf
-from django.core.mail import send_mail
-from django.conf import settings
 
 def asset_list(request):
     assets = Asset.objects.all()
-    return render(request, 'asset_list.html', {'assets': assets})
+    return render(request, 'index.html', {'assets': assets})
 
 def asset_create(request):
     if request.method == 'POST':
         form = AssetForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('asset_list')
+            return redirect('index')
     else:
         form = AssetForm()
     return render(request, 'asset_form.html', {'form': form})
@@ -27,7 +25,7 @@ def asset_update(request, pk):
         form = AssetForm(request.POST, instance=asset)
         if form.is_valid():
             form.save()
-            return redirect('asset_list')
+            return redirect('index')
     else:
         form = AssetForm(instance=asset)
     return render(request, 'asset_form.html', {'form': form})
@@ -36,12 +34,12 @@ def asset_update(request, pk):
 def asset_delete(request, pk):
     asset = get_object_or_404(Asset, pk=pk)
     asset.delete()
-    return redirect('asset_list')
+    return redirect('index')
 
 def price_history(request, pk):
     asset = get_object_or_404(Asset, pk=pk)
     ticker = yf.Ticker(asset.ticker)
-    hist = ticker.history(period="1mo")  # Último mês de dados
+    hist = ticker.history(period="1mo")  
 
     price_history = [
         {'Date': date.strftime('%Y-%m-%d'), 'Close': row['Close']}
@@ -49,23 +47,3 @@ def price_history(request, pk):
     ]
     
     return render(request, 'price_history.html', {'asset': asset, 'price_history': price_history})
-
-def check_prices():
-    assets = Asset.objects.all()
-    for asset in assets:
-        ticker = yf.Ticker(asset.ticker)
-        current_price = ticker.history(period="1d")['Close'].iloc[-1]
-        if current_price < asset.lower_tunnel:
-            send_mail(
-                'Oportunidade de Compra',
-                f'O preço do ativo {asset.ticker} está abaixo do limite inferior do túnel: {current_price}',
-                settings.DEFAULT_FROM_EMAIL,
-                [settings.NOTIFICATION_EMAIL]
-            )
-        elif current_price > asset.upper_tunnel:
-            send_mail(
-                'Oportunidade de Venda',
-                f'O preço do ativo {asset.ticker} está acima do limite superior do túnel: {current_price}',
-                settings.DEFAULT_FROM_EMAIL,
-                [settings.NOTIFICATION_EMAIL]
-            )

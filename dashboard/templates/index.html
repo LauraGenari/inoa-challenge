@@ -1,12 +1,14 @@
-<!-- dashboard/templates/dashboard/index.html -->
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Monitoramento de Ativos</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 </head>
 <body>
     <h1>Monitoramento de Ativos</h1>
-    <a href="{% url 'asset_create' %}">Adicionar Ativo</a>
+    <a class="button" href="{% url 'asset_create' %}">Adicionar Ativo</a>
     <ul>
         {% for asset in assets %}
         <li>
