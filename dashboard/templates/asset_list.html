@@ -1,0 +1,45 @@
+{% extends 'index.html' %} {% load static %} {% block content %}
+<div class="container" style="height: 100%">
+  <div class="row" style="height: 100%">
+    <div class="col">
+      <div class="d-flex justify-content-end">
+        <a class="btn btn-primary mb-2" role="button" href="{% url 'asset_create' %}"
+          >Adicionar Ativo</a
+        >
+      </div>
+      <ul class="list-group">
+        {% for asset in assets %}
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          <h5 class="text-monospace mx-0 my-0">{{ asset.ticker }}</h5>
+          <div>
+            <a
+              class="btn btn-primary"
+              role="button"
+              href="{% url 'price_history' asset.pk %}"
+              >Histórico de Preços</a
+            >
+            <a
+              class="btn btn-primary"
+              role="button"
+              href="{% url 'asset_update' asset.pk %}"
+              >Editar</a
+            >
+            <form
+              action="{% url 'asset_delete' asset.pk %}"
+              method="post"
+              style="display: inline"
+            >
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Deletar</button>
+            </form>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

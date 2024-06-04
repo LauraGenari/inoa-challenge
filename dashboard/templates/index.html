@@ -1,26 +1,20 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Monitoramento de Ativos</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-</head>
-<body>
-    <h1>Monitoramento de Ativos</h1>
-    <a class="button" href="{% url 'asset_create' %}">Adicionar Ativo</a>
-    <ul>
-        {% for asset in assets %}
-        <li>
-            {{ asset.ticker }} -
-            <a href="{% url 'price_history' asset.pk %}">Histórico de Preços</a> -
-            <a href="{% url 'asset_update' asset.pk %}">Editar</a> -
-            <form action="{% url 'asset_delete' asset.pk %}" method="post" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit">Deletar</button>
-            </form>
-        </li>
-        {% endfor %}
-    </ul>
-</body>
+  </head>
+  <body style="height: 100vh">
+    <div class="bg-dark p-3 mb-2 text-white">
+      <div class="container" style="height: 100%">
+        <h1 class="display-4">Monitoramento de Ativos</h1>
+      </div>
+    </div>
+
+    <div class="bg-light" style="height: calc(100% - 7.5rem)">
+        {% block content %} {% endblock %}
+    </div>
+  </body>
 </html>

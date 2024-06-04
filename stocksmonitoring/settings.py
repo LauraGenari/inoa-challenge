@@ -34,8 +34,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DATE_FORMAT = ['%d/%m/%Y']
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

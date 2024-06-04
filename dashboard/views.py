@@ -7,14 +7,14 @@ import yfinance as yf
 
 def asset_list(request):
     assets = Asset.objects.all()
-    return render(request, 'index.html', {'assets': assets})
+    return render(request, 'asset_list.html', {'assets': assets})
 
 def asset_create(request):
     if request.method == 'POST':
         form = AssetForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            return redirect('asset_list')
     else:
         form = AssetForm()
     return render(request, 'asset_form.html', {'form': form})
@@ -25,7 +25,7 @@ def asset_update(request, pk):
         form = AssetForm(request.POST, instance=asset)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            return redirect('asset_list')
     else:
         form = AssetForm(instance=asset)
     return render(request, 'asset_form.html', {'form': form})
@@ -34,7 +34,7 @@ def asset_update(request, pk):
 def asset_delete(request, pk):
     asset = get_object_or_404(Asset, pk=pk)
     asset.delete()
-    return redirect('index')
+    return redirect('asset_list')
 
 def price_history(request, pk):
     asset = get_object_or_404(Asset, pk=pk)
@@ -42,7 +42,7 @@ def price_history(request, pk):
     hist = ticker.history(period="1mo")  
 
     price_history = [
-        {'Date': date.strftime('%Y-%m-%d'), 'Close': row['Close']}
+        {'Date': date.strftime('%d/%m/%Y'), 'Close': row['Close']}
         for date, row in hist.iterrows()
     ]
     
