@@ -3,7 +3,6 @@ import time
 import django
 from threading import Thread
 
-# Inicializar o Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'stocksmonitoring.settings')
 django.setup()
 
