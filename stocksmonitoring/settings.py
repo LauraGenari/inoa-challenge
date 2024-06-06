@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dashboard',
-    'django_cron',
 ]
 
 MIDDLEWARE = [
@@ -135,7 +134,3 @@ EMAIL_HOST_USER = 'lauragenari231@gmail.com'  # Substitua pelo seu e-mail
 EMAIL_HOST_PASSWORD = 'vvxs gquh gfiz yvlg'  # Substitua pela sua senha
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 NOTIFICATION_EMAIL= 'lauragenari471@outlook.com'
-
-CRON_CLASSES = [
-    'dashboard.cron.CheckPricesCronJob',
-]

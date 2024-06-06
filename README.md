@@ -15,9 +15,9 @@
 ## Running the project
 Open two terminals and run:
 - ``python manage.py runserver``
-- ``python manage.py runcrons``
+- ``python run_crons``
 
-> Note that the automated email sending depends on your OS. I am using Windows, so I will detail this approach, but I will let references for Linux and MacOS.
+> Note that the automated email sending might get really annoying if you set a lower/upper tunnel too far from the average and a short time for checking. It will cause a lot of spam emails.
 
 **Hope you guys liked it**
 
