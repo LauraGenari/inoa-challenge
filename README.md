@@ -1,14 +1,16 @@
 # INOA Challenge
+This repository is a project for the INOA's hiring avaliation. It is a plataform in which the user add tickers from Yahoo Finance plataform, and set lower and upper tunnels for that asset that triggers a notification email if the value of the action is above the upper tunnel or below the lower tunnel. Also, the user sets the periodicity of checking.
 
 ## Requirements
 - python3
 - pip3
 
 ## Installing
-``pip install -r requirements.txt``
+1. Create a virtual environment
+2. run ``pip install -r requirements.txt``
 
 ## Start by
-1. Create a virtual environment
+1. Activate your virtual environment
 2. run ``python manage.py makemigrations``
 3. run ``python manage.py migrate``
 4. update .env to real credentials. Suggest using gmail, and here is a short guide:
