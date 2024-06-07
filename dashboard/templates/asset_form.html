@@ -1,10 +1,17 @@
-{% extends 'index.html' %} {% load static %} {% block content %}
+{% extends 'index.html' %} 
+{% load static %} 
+
+{% block content %}
 <div class="container pt-4">
+  
   <div class="row border rounded">
     <div class="bg-white col mt-4">
-      <h1>
-        {% if form.instance.id %}Editar{% else %}Adicionar{% endif %} Ativo
-      </h1>
+      {% if error_message != '' %}
+        <div class="alert alert-danger " role="alert" id="errorToast">
+          {{ error_message }}
+        </div>
+      {% endif %}
+      <h1>{% if form.instance.id %}Editar{% else %}Adicionar{% endif %} Ativo</h1>
       <form method="post">
         {% csrf_token %}
         <div class="form-group">
@@ -21,45 +28,10 @@
         </div>
         <div class="d-flex justify-content-end mb-4">
           <button type="submit" class="btn btn-primary mr-2">Salvar</button>
-          <a
-            class="btn btn-secondary"
-            role="button"
-            href="{% url 'asset_list' %}"
-            >Voltar</a
-          >
+          <a class="btn btn-secondary" role="button" href="{% url 'asset_list' %}">Voltar</a>
         </div>
       </form>
     </div>
   </div>
 </div>
-
-<style>
-  .form-group > div {
-    display: flex;
-    justify-content: space-between;
-    width: 50%;
-  }
-  .form-group > div > input {
-    display: block;
-    height: calc(1.5em + 0.75rem + 2px);
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  }
-  .form-group > div > .helptext {
-    display: block;
-    margin-top: 0.25rem;
-    font-size: 80%;
-    font-weight: 400;
-    color: #6c757d !important;
-  }
-</style>
-
 {% endblock %}
